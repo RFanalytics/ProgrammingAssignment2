@@ -15,6 +15,12 @@ makeCacheMatrix <- function(x = matrix()) {    # input x will be a matrix
         
         inv <- NULL                                #  inv will be our 'inverse' and it's reset to NULL every 
                                                    #  time the function makeCacheMatrix is called
+
+
+	set <- function(y) {                    #  Set will reset the inverse matrix to NULL so that if the matrix 
+                x <<- y                         #  is re-assigned it invalidates the previously computed inverse
+                inv <<- NULL
+        } 
         
                                                 #   The following 3 functions are defined but not run when makeCacheMatrix is called.
                                                 #   instead, they will be used by cachesolve() to get values for x or for
@@ -29,7 +35,7 @@ makeCacheMatrix <- function(x = matrix()) {    # input x will be a matrix
         getinverse <- function() { inv }        # this will return the cached value to cachsolve() on
                                                 #  subsequent accesses
         
-        list(get = get,                #   This portion is used each time makeCacheMatrix() is called,       
+        list(set = set, get = get,     #   This portion is used each time makeCacheMatrix() is called,       
              setinverse = setinverse,  #   that is, each time we make a new object.  This is a list of 
              getinverse = getinverse)  #   the internal functions ('methods') so a calling function
                                        #   knows how to access those methods.                            
